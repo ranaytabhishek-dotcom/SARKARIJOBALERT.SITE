@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Download, Edit, Trash2, Plus } from "lucide-react";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { Category, JobPost, AppSettings, TrafficStats } from "../types";
@@ -679,6 +680,20 @@ export default function AdminDashboard() {
                   Save Settings
                 </button>
               </form>
+
+              <div className="mt-12 border-t pt-8">
+                <h3 className="text-xl font-bold mb-2 text-[#a11728]">Export Source Code</h3>
+                <p className="text-gray-600 mb-4">
+                  Download the complete source code of your website as a ZIP file. This includes all your latest changes, settings, and features, and is fully compatible with GitHub and other hosting platforms.
+                </p>
+                <a 
+                  href="/api/export-zip" 
+                  download
+                  className="bg-black text-white px-6 py-3 rounded font-bold hover:bg-gray-800 transition-colors inline-flex items-center gap-2"
+                >
+                  <Download className="w-5 h-5" /> Download Source Code (ZIP)
+                </a>
+              </div>
             </div>
           )}
 

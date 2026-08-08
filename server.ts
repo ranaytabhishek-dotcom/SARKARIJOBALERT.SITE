@@ -1,6 +1,8 @@
 import express from "express";
 import path from "path";
 import fs from "fs/promises";
+// @ts-ignore
+import archiver from "archiver";
 import { createServer as createViteServer } from "vite";
 import { v4 as uuidv4 } from "uuid";
 
@@ -181,6 +183,26 @@ async function startServer() {
     xml += `\n</urlset>`;
     res.type("application/xml");
     res.send(xml);
+  });
+
+  app.get("/api/export-zip", (req, res) => {
+    res.attachment("sarkarijobalert-source.zip");
+    const archive = archiver("zip", {
+      zlib: { level: 9 } // Sets the compression level.
+    });
+
+    archive.on("error", (err) => {
+      res.status(500).send({ error: err.message });
+    });
+
+    archive.pipe(res);
+
+    archive.glob("**/*", {
+      cwd: process.cwd(),
+      ignore: ["node_modules/**", "dist/**", ".git/**", ".npm/**", "sarkarijobalert-source.zip"]
+    });
+
+    archive.finalize();
   });
 
   // Vite middleware for development
